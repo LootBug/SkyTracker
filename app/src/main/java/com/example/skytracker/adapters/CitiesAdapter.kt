@@ -12,10 +12,15 @@ import com.example.skytracker.data.api.CityLight
 import com.example.skytracker.data.api.Instance
 import com.example.skytracker.data.api.WeatherData
 import com.example.skytracker.data.api.WeatherResponse
+import com.example.skytracker.data.database.LastCityDao
+import com.example.skytracker.data.database.LastCityDatabase
+import com.example.skytracker.data.database.LastCityEntity
 import com.example.skytracker.databinding.ActivityMainBinding
 import com.example.skytracker.databinding.CityItemBinding
 import com.example.skytracker.databinding.WeatherItemBinding
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,6 +43,7 @@ class CitiesAdapter(
     }
 
     private lateinit var weatherAdapter: WeatherAdapter
+    private lateinit var lastCityDao: LastCityDao
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -69,6 +75,13 @@ class CitiesAdapter(
                 }
             })
 
+            GlobalScope.launch {
+                lastCityDao = LastCityDatabase
+                    .getDatabase(context)
+                    .lastCityDao()
+
+                lastCityDao.insertLastCity(LastCityEntity(0, city.name))
+            }
 
             if (context is CitySelectionActivity) {
                 context.finish()

@@ -10,7 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.skytracker.adapters.WeatherAdapter
 import com.example.skytracker.data.api.Instance
 import com.example.skytracker.data.api.WeatherResponse
+import com.example.skytracker.data.database.LastCityDao
+import com.example.skytracker.data.database.LastCityDatabase
 import com.example.skytracker.databinding.ActivityMainBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         lateinit var binding: ActivityMainBinding
     }
+    private lateinit var lastCityDao: LastCityDao
     private lateinit var weatherAdapter: WeatherAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,9 +31,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val service = Instance.api
-        val call = service.getWeatherDataInit()
-        fetchWeather(call)
+        GlobalScope.launch {
+            lastCityDao = LastCityDatabase
+                .getDatabase(this@MainActivity)
+                .lastCityDao()
+
+            val service = Instance.api
+            val lastCity = lastCityDao.getLastCity()
+            if (lastCity.isEmpty()) {
+                runOnUiThread {
+                    fetchWeather(service.getWeatherDataInit())
+                }
+            } else {
+                runOnUiThread {
+                    fetchWeather(service.getWeatherData(lastCity[0].lastCity))
+                }
+            }
+        }
+
     }
 
     private fun fetchWeather(call: Call<WeatherResponse>) {
