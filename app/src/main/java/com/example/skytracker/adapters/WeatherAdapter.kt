@@ -12,6 +12,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.math.roundToInt
 
 class WeatherAdapter(
     private val weatherData: List<WeatherData>,
@@ -43,10 +44,10 @@ class WeatherAdapter(
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(weatherData: WeatherData, isFirst: Boolean) {
-            binding.degree.text = weatherData.main.temp.toString() + "°C"
-            binding.pressure.text = (weatherData.main.pressure * 0.75).toString() + " мм рт. ст."
+            binding.degree.text = weatherData.main.temp.roundToInt().toString() + "°C"
+            binding.pressure.text = (weatherData.main.pressure * 0.75).roundToInt().toString() + " мм рт. ст."
             binding.humidity.text = weatherData.main.humidity.toString() + " %"
-            binding.wind.text = weatherData.wind.speed.toString() + " м/c"
+            binding.wind.text = weatherData.wind.speed.roundToInt().toString() + " м/c"
             Picasso.get()
                 .load("https://openweathermap.org/img/wn/" + weatherData.weather[0].icon + "@2x.png")
                 .into(binding.weatherIcon)

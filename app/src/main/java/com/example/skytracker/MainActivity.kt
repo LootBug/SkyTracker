@@ -2,6 +2,8 @@ package com.example.skytracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.skytracker.adapters.WeatherAdapter
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                     weatherAdapter = weather?.let { WeatherAdapter(it, this@MainActivity, response.city.timezone) }!!
                     binding.weatherList.adapter = weatherAdapter
                     binding.weatherList.layoutManager = LinearLayoutManager(this@MainActivity)
+                    binding.city.text = response.city.name
                 } else {
                     Toast.makeText(applicationContext, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
@@ -44,5 +47,20 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, t.toString(), Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.city_selection -> {
+                /*val intent = Intent(this, FollowedVacanciesActivity::class.java)
+                this.startActivity(intent)*/
+            }
+        }
+        return true
     }
 }

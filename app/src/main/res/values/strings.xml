@@ -3,4 +3,6 @@
     <string name="pressure">Давление</string>
     <string name="humidity">Влажность</string>
     <string name="wind">Скорость ветра</string>
+    <string name="open_weather">Прогноз погоды на каждые 3 часа</string>
+    <string name="city_selection">Выбрать город</string>
 </resources>
