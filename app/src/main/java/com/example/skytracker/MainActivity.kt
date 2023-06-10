@@ -1,5 +1,6 @@
 package com.example.skytracker
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -15,7 +16,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+    companion object {
+        lateinit var binding: ActivityMainBinding
+    }
     private lateinit var weatherAdapter: WeatherAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val service = Instance.api
-        val call = service.getWeatherData()
+        val call = service.getWeatherDataInit()
         fetchWeather(call)
     }
 
@@ -57,8 +60,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.city_selection -> {
-                /*val intent = Intent(this, FollowedVacanciesActivity::class.java)
-                this.startActivity(intent)*/
+                val intent = Intent(this, CitySelectionActivity::class.java)
+                this.startActivity(intent)
             }
         }
         return true

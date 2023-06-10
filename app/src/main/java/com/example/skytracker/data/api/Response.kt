@@ -65,3 +65,5 @@ data class Coord(
     val lat: Double,
     val lon: Double
 )
+
+data class CityLight(val name: String)
