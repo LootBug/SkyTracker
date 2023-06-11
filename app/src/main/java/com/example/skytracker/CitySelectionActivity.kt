@@ -1,7 +1,9 @@
 package com.example.skytracker
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.skytracker.adapters.CitiesAdapter
 import com.example.skytracker.adapters.WeatherAdapter
@@ -68,8 +70,24 @@ class CitySelectionActivity : AppCompatActivity() {
             CityLight("Архангельск")
         )
 
-        citiesAdapter = CitiesAdapter(cityList, this)!!
+        val currentOrientation = resources.configuration.orientation
+
+        citiesAdapter = CitiesAdapter(cityList, this)
         binding.citiesList.adapter = citiesAdapter
-        binding.citiesList.layoutManager = LinearLayoutManager(this)
+        handleOrientationChange(currentOrientation)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        handleOrientationChange(newConfig.orientation)
+    }
+
+    private fun handleOrientationChange(orientation: Int) {
+        // Ваш код для обработки изменений ориентации экрана
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            binding.citiesList.layoutManager = LinearLayoutManager(this@CitySelectionActivity)
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            binding.citiesList.layoutManager = GridLayoutManager(this@CitySelectionActivity, 2)
+        }
     }
 }

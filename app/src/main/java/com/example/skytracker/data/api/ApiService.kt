@@ -10,5 +10,4 @@ interface ApiService {
 
     @GET("forecast?appid=8e9f3206bb232161e3e358b974dacf4f&units=metric&lang=ru")
     fun getWeatherData(@Query("q") query: String): Call<WeatherResponse>
-
 }

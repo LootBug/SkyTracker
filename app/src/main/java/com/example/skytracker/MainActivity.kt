@@ -1,11 +1,13 @@
 package com.example.skytracker
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.skytracker.adapters.WeatherAdapter
 import com.example.skytracker.data.api.Instance
@@ -49,6 +51,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val currentOrientation = resources.configuration.orientation
+        handleOrientationChange(currentOrientation)
+
     }
 
     private fun fetchWeather(call: Call<WeatherResponse>) {
@@ -59,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                     val weather = response?.list
                     weatherAdapter = weather?.let { WeatherAdapter(it, this@MainActivity, response.city.timezone) }!!
                     binding.weatherList.adapter = weatherAdapter
-                    binding.weatherList.layoutManager = LinearLayoutManager(this@MainActivity)
+
                     binding.city.text = response.city.name
                 } else {
                     Toast.makeText(applicationContext, "Something went wrong", Toast.LENGTH_SHORT).show()
@@ -85,5 +90,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return true
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        handleOrientationChange(newConfig.orientation)
+    }
+
+    private fun handleOrientationChange(orientation: Int) {
+        // Ваш код для обработки изменений ориентации экрана
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            binding.weatherList.layoutManager = LinearLayoutManager(this@MainActivity)
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            binding.weatherList.layoutManager = GridLayoutManager(this@MainActivity, 2)
+        }
     }
 }

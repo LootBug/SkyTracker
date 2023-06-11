@@ -63,7 +63,7 @@ class CitiesAdapter(
                         val weather = response?.list
                         weatherAdapter = weather?.let { WeatherAdapter(it, context, response.city.timezone) }!!
                         MainActivity.binding.weatherList.adapter = weatherAdapter
-                        MainActivity.binding.weatherList.layoutManager = LinearLayoutManager(context)
+
                         MainActivity.binding.city.text = response.city.name
                     } else {
                         Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
