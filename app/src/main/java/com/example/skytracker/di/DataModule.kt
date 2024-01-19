@@ -2,11 +2,13 @@ package com.example.rick_and_morty_characters_wiki.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.skytracker.data.CityRepositoryImpl
 import com.example.skytracker.data.WeatherRepositoryImpl
 import com.example.skytracker.data.api.ApiService
 import com.example.skytracker.data.api.Instance
 import com.example.skytracker.data.database.LastCityDao
 import com.example.skytracker.data.database.LastCityDatabase
+import com.example.skytracker.domain.CityRepository
 import com.example.skytracker.domain.WeatherRepository
 
 import dagger.Module
@@ -24,6 +26,12 @@ class DataModule {
     @Provides
     fun provideCharacterRepository(apiService: ApiService, @ApplicationContext applicationContext: Context): WeatherRepository {
         return WeatherRepositoryImpl(apiService, applicationContext)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCityRepository(dao: LastCityDao): CityRepository {
+        return CityRepositoryImpl(dao)
     }
 
     @Singleton

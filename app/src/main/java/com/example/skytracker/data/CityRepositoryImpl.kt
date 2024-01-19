@@ -8,11 +8,11 @@ import javax.inject.Inject
 class CityRepositoryImpl @Inject constructor(
     private val dao: LastCityDao
 ): CityRepository {
-    override suspend fun getLastCity(): String {
+    override suspend fun getLastCity(): String? {
         return if (dao.getLastCity().isNotEmpty()) {
             dao.getLastCity()[0].lastCity
         } else {
-            ""
+            null
         }
     }
 

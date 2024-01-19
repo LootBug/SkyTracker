@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     companion object {
         lateinit var binding: ActivityMainBinding
     }
-    private lateinit var lastCityDao: LastCityDao
     private lateinit var weatherAdapter: WeatherAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +42,16 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
         GlobalScope.launch {
-            presenter.onViewCreated()
+            val lastCity = presenter.getLastCity()
+            if (lastCity==null) {
+                presenter.onViewCreated()
+            } else {
+                presenter.onCitySelected(lastCity)
+            }
+
         }
 
         val currentOrientation = resources.configuration.orientation

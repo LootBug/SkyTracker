@@ -1,6 +1,8 @@
 package com.example.rick_and_morty_characters_wiki.di
 
+import com.example.skytracker.domain.CityRepository
 import com.example.skytracker.domain.WeatherRepository
+import com.example.skytracker.domain.interacters.GetLastCityUseCase
 import com.example.skytracker.domain.interacters.GetWeatherDataInitUseCase
 import com.example.skytracker.domain.interacters.GetWeatherDataUseCase
 import dagger.Module
@@ -23,6 +25,12 @@ class DomainModule {
     @Provides
     fun provideGetWeatherUseCase(weatherRepository: WeatherRepository) : GetWeatherDataUseCase {
         return GetWeatherDataUseCase(weatherRepository)
+    }
+
+    @Singleton
+    @Provides
+    suspend fun provideGetLastCityUseCase(cityRepository: CityRepository) : String? {
+        return GetLastCityUseCase(cityRepository).execute()
     }
 
 }
