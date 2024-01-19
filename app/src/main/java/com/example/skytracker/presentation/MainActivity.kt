@@ -1,4 +1,4 @@
-package com.example.skytracker
+package com.example.skytracker.presentation
 
 import android.content.Intent
 import android.content.res.Configuration
@@ -9,7 +9,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.skytracker.adapters.WeatherAdapter
+import com.example.skytracker.R
+import com.example.skytracker.presentation.adapters.WeatherAdapter
 import com.example.skytracker.data.api.Instance
 import com.example.skytracker.data.api.WeatherResponse
 import com.example.skytracker.data.database.LastCityDao

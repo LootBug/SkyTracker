@@ -1,12 +1,12 @@
-package com.example.skytracker
+package com.example.skytracker.presentation
 
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.skytracker.adapters.CitiesAdapter
-import com.example.skytracker.adapters.WeatherAdapter
+import com.example.skytracker.presentation.adapters.CitiesAdapter
+import com.example.skytracker.presentation.adapters.WeatherAdapter
 import com.example.skytracker.data.api.CityLight
 import com.example.skytracker.databinding.ActivityCitySelectionBinding
 

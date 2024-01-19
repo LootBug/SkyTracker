@@ -1,35 +1,25 @@
-package com.example.skytracker.adapters
+package com.example.skytracker.presentation.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.*
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.skytracker.CitySelectionActivity
-import com.example.skytracker.MainActivity
+import com.example.skytracker.presentation.CitySelectionActivity
+import com.example.skytracker.presentation.MainActivity
 import com.example.skytracker.data.api.CityLight
 import com.example.skytracker.data.api.Instance
-import com.example.skytracker.data.api.WeatherData
 import com.example.skytracker.data.api.WeatherResponse
 import com.example.skytracker.data.database.LastCityDao
 import com.example.skytracker.data.database.LastCityDatabase
 import com.example.skytracker.data.database.LastCityEntity
-import com.example.skytracker.databinding.ActivityMainBinding
 import com.example.skytracker.databinding.CityItemBinding
-import com.example.skytracker.databinding.WeatherItemBinding
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.math.roundToInt
 
 
 class CitiesAdapter(

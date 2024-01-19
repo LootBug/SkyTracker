@@ -1,4 +1,4 @@
-package com.example.skytracker.adapters
+package com.example.skytracker.presentation.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
