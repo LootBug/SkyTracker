@@ -6,7 +6,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.skytracker.presentation.CitySelectionActivity
-import com.example.skytracker.presentation.MainActivity
+import com.example.skytracker.presentation.main.MainActivity
 import com.example.skytracker.data.api.CityLight
 import com.example.skytracker.data.api.Instance
 import com.example.skytracker.data.api.WeatherResponse
@@ -14,6 +14,8 @@ import com.example.skytracker.data.database.LastCityDao
 import com.example.skytracker.data.database.LastCityDatabase
 import com.example.skytracker.data.database.LastCityEntity
 import com.example.skytracker.databinding.CityItemBinding
+import com.example.skytracker.domain.mappres.toWeatherDomain
+import com.example.skytracker.domain.mappres.toWeatherModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -51,7 +53,7 @@ class CitiesAdapter(
                     if (response.isSuccessful) {
                         val response = response.body()
                         val weather = response?.list
-                        weatherAdapter = weather?.let { WeatherAdapter(it, context, response.city.timezone) }!!
+                        weatherAdapter = weather?.let { WeatherAdapter(it.map { it.toWeatherModel() }, context, response.city.timezone) }!!
                         MainActivity.binding.weatherList.adapter = weatherAdapter
 
                         MainActivity.binding.city.text = response.city.name

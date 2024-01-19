@@ -1,5 +1,8 @@
 package com.example.rick_and_morty_characters_wiki.di
 
+import com.example.skytracker.domain.WeatherRepository
+import com.example.skytracker.domain.interacters.GetWeatherDataInitUseCase
+import com.example.skytracker.domain.interacters.GetWeatherDataUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,16 +13,16 @@ import javax.inject.Singleton
 @Module
 class DomainModule {
 
-//    @Singleton
-//    @Provides
-//    fun provideLoadCharactersUseCase(charactersRepository: CharactersRepository) : LoadCharactersUseCase {
-//        return LoadCharactersUseCase(charactersRepository)
-//    }
-//
-//    @Singleton
-//    @Provides
-//    fun provideLoadImageUseCase() : LoadImageUseCase {
-//        return LoadImageUseCase()
-//    }
+    @Singleton
+    @Provides
+    fun provideGetWeatherInitUseCase(weatherRepository: WeatherRepository) : GetWeatherDataInitUseCase {
+        return GetWeatherDataInitUseCase(weatherRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetWeatherUseCase(weatherRepository: WeatherRepository) : GetWeatherDataUseCase {
+        return GetWeatherDataUseCase(weatherRepository)
+    }
 
 }

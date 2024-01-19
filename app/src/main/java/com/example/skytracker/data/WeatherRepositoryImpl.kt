@@ -8,45 +8,39 @@ import com.example.skytracker.data.api.WeatherResponse
 import com.example.skytracker.domain.WeatherRepository
 import com.example.skytracker.domain.mappres.toWeatherDomain
 import com.example.skytracker.domain.models.Weather
-import com.example.skytracker.presentation.MainActivity
-import com.example.skytracker.presentation.adapters.WeatherAdapter
+import com.example.skytracker.domain.models.WeatherRes
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Query
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     @ApplicationContext private val applicationContext: Context
 ) : WeatherRepository {
-    override suspend fun getWeatherDataInit(): List<Weather> {
+    override suspend fun getWeatherDataInit(): WeatherRes {
         return fetchWeather(apiService.getWeatherDataInit())
     }
 
-    override suspend fun getWeatherData(query: String): List<Weather> {
+    override suspend fun getWeatherData(query: String): WeatherRes {
         return fetchWeather(apiService.getWeatherData(query))
     }
 
-    private fun fetchWeather(call: Call<WeatherResponse>): List<Weather> {
-        var res: List<WeatherData>? = null
-        call.enqueue(object : Callback<WeatherResponse> {
-            override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
+    private suspend fun fetchWeather(call: Call<WeatherResponse>): WeatherRes {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = call.execute()
                 if (response.isSuccessful) {
-                    val response = response.body()
-                    res = response?.list!!
-
+                    response.body()?.toWeatherDomain() ?: WeatherRes(city = "", timezone = 0, weather = emptyList())
                 } else {
-                    Toast.makeText(applicationContext, "Something went wrong", Toast.LENGTH_SHORT).show()
+                    WeatherRes(city = "", timezone = 0, weather = emptyList())
                 }
+            } catch (e: Exception) {
+                WeatherRes(city = "", timezone = 0, weather = emptyList())
             }
-
-            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                Toast.makeText(applicationContext, t.toString(), Toast.LENGTH_LONG).show()
-            }
-        })
-
-        return res?.map { it.toWeatherDomain() } ?: emptyList()
+        }
     }
 }

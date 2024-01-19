@@ -1,5 +1,11 @@
 package com.example.skytracker.domain.models
 
+
+data class WeatherRes(
+    val city: String,
+    val timezone: Int,
+    val weather: List<Weather>
+)
 data class Weather(
     val temp: Double,
     val pressure: Int,

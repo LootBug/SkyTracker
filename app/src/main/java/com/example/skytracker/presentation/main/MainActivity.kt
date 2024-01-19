@@ -1,4 +1,4 @@
-package com.example.skytracker.presentation
+package com.example.skytracker.presentation.main
 
 import android.content.Intent
 import android.content.res.Configuration
@@ -16,13 +16,22 @@ import com.example.skytracker.data.api.WeatherResponse
 import com.example.skytracker.data.database.LastCityDao
 import com.example.skytracker.data.database.LastCityDatabase
 import com.example.skytracker.databinding.ActivityMainBinding
+import com.example.skytracker.domain.models.Weather
+import com.example.skytracker.domain.models.WeatherRes
+import com.example.skytracker.presentation.CitySelectionActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), MainContract.View {
+
+    @Inject
+    lateinit var presenter: MainContract.Presenter
     companion object {
         lateinit var binding: ActivityMainBinding
     }
@@ -35,21 +44,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         GlobalScope.launch {
-            lastCityDao = LastCityDatabase
-                .getDatabase(this@MainActivity)
-                .lastCityDao()
-
-            val service = Instance.api
-            val lastCity = lastCityDao.getLastCity()
-            if (lastCity.isEmpty()) {
-                runOnUiThread {
-                    fetchWeather(service.getWeatherDataInit())
-                }
-            } else {
-                runOnUiThread {
-                    fetchWeather(service.getWeatherData(lastCity[0].lastCity))
-                }
-            }
+            presenter.onViewCreated()
         }
 
         val currentOrientation = resources.configuration.orientation
@@ -57,26 +52,26 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun fetchWeather(call: Call<WeatherResponse>) {
-        call.enqueue(object : Callback<WeatherResponse> {
-            override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
-                if (response.isSuccessful) {
-                    val response = response.body()
-                    val weather = response?.list
-                    weatherAdapter = weather?.let { WeatherAdapter(it, this@MainActivity, response.city.timezone) }!!
-                    binding.weatherList.adapter = weatherAdapter
-
-                    binding.city.text = response.city.name
-                } else {
-                    Toast.makeText(applicationContext, "Something went wrong", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                Toast.makeText(applicationContext, t.toString(), Toast.LENGTH_LONG).show()
-            }
-        })
-    }
+//    private fun fetchWeather(call: Call<WeatherResponse>) {
+//        call.enqueue(object : Callback<WeatherResponse> {
+//            override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
+//                if (response.isSuccessful) {
+//                    val response = response.body()
+//                    val weather = response?.list
+//                    weatherAdapter = weather?.let { WeatherAdapter(it, this@MainActivity, response.city.timezone) }!!
+//                    binding.weatherList.adapter = weatherAdapter
+//
+//                    binding.city.text = response.city.name
+//                } else {
+//                    Toast.makeText(applicationContext, "Something went wrong", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+//                Toast.makeText(applicationContext, t.toString(), Toast.LENGTH_LONG).show()
+//            }
+//        })
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -105,5 +100,11 @@ class MainActivity : AppCompatActivity() {
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             binding.weatherList.layoutManager = GridLayoutManager(this@MainActivity, 2)
         }
+    }
+
+    override fun showWeather(weather: WeatherRes) {
+        weatherAdapter = WeatherAdapter(weather.weather, this@MainActivity, weather.timezone)
+        binding.weatherList.adapter = weatherAdapter
+        binding.city.text = weather.city
     }
 }

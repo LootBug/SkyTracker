@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.skytracker.data.WeatherRepositoryImpl
 import com.example.skytracker.data.api.ApiService
 import com.example.skytracker.data.api.Instance
+import com.example.skytracker.data.database.LastCityDao
 import com.example.skytracker.data.database.LastCityDatabase
 import com.example.skytracker.domain.WeatherRepository
 
@@ -35,6 +36,12 @@ class DataModule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): LastCityDatabase {
         return LastCityDatabase.getDatabase(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideDao(database: LastCityDatabase): LastCityDao {
+        return database.lastCityDao()
     }
 
 }

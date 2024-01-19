@@ -6,4 +6,5 @@
     <string name="open_weather">Прогноз погоды на каждые 3 часа</string>
     <string name="city_selection">Выбрать город</string>
     <string name="select_city">Выберите город</string>
+    <string name="loading">Загрузка...</string>
 </resources>
