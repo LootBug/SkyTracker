@@ -17,7 +17,7 @@
         android:theme="@style/Theme.SkyTracker"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.CitySelectionActivity"
+            android:name=".presentation.city_selection.CitySelectionActivity"
             android:exported="false"
             android:screenOrientation="sensor"
             android:configChanges="orientation|screenSize"/>

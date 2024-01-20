@@ -6,25 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.skytracker.R
 import com.example.skytracker.presentation.adapters.WeatherAdapter
-import com.example.skytracker.data.api.Instance
-import com.example.skytracker.data.api.WeatherResponse
-import com.example.skytracker.data.database.LastCityDao
-import com.example.skytracker.data.database.LastCityDatabase
 import com.example.skytracker.databinding.ActivityMainBinding
-import com.example.skytracker.domain.models.Weather
 import com.example.skytracker.domain.models.WeatherRes
-import com.example.skytracker.presentation.CitySelectionActivity
+import com.example.skytracker.presentation.city_selection.CitySelectionActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint

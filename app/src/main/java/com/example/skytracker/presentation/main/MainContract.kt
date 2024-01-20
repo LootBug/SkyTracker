@@ -10,6 +10,7 @@ class MainContract {
 
     interface Presenter {
         suspend fun onViewCreated()
+
         suspend fun onCitySelected(city: String)
 
         suspend fun getLastCity(): String?

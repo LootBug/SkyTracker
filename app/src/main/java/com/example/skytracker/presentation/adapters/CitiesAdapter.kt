@@ -5,17 +5,16 @@ import android.content.Context
 import android.view.*
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.skytracker.presentation.CitySelectionActivity
+import com.example.skytracker.presentation.city_selection.CitySelectionActivity
 import com.example.skytracker.presentation.main.MainActivity
-import com.example.skytracker.data.api.CityLight
 import com.example.skytracker.data.api.Instance
 import com.example.skytracker.data.api.WeatherResponse
 import com.example.skytracker.data.database.LastCityDao
 import com.example.skytracker.data.database.LastCityDatabase
 import com.example.skytracker.data.database.LastCityEntity
 import com.example.skytracker.databinding.CityItemBinding
-import com.example.skytracker.domain.mappres.toWeatherDomain
 import com.example.skytracker.domain.mappres.toWeatherModel
+import com.example.skytracker.domain.models.City
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -25,7 +24,7 @@ import java.util.*
 
 
 class CitiesAdapter(
-    private val city: List<CityLight>,
+    private val city: List<City>,
     private val context: Context
 ) :
     RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
@@ -89,7 +88,7 @@ class CitiesAdapter(
     inner class ViewHolder(private val binding: CityItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(city: CityLight) {
+        fun bind(city: City) {
             binding.city.text = city.name
         }
     }
