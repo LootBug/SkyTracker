@@ -5,6 +5,7 @@ import com.example.skytracker.domain.WeatherRepository
 import com.example.skytracker.domain.interacters.GetLastCityUseCase
 import com.example.skytracker.domain.interacters.GetWeatherDataInitUseCase
 import com.example.skytracker.domain.interacters.GetWeatherDataUseCase
+import com.example.skytracker.domain.interacters.SetLastCityUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +32,12 @@ class DomainModule {
     @Provides
     suspend fun provideGetLastCityUseCase(cityRepository: CityRepository) : String? {
         return GetLastCityUseCase(cityRepository).execute()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSetLastCityUseCase(cityRepository: CityRepository) : SetLastCityUseCase {
+        return SetLastCityUseCase(cityRepository)
     }
 
 }

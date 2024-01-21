@@ -9,5 +9,7 @@ interface CitiesContract {
 
     interface Presenter {
         fun onViewCreated()
+
+        suspend fun setLastCity(city: String)
     }
 }

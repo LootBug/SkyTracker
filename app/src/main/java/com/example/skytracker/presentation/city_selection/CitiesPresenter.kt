@@ -1,10 +1,12 @@
 package com.example.skytracker.presentation.city_selection
 
+import com.example.skytracker.domain.interacters.SetLastCityUseCase
 import com.example.skytracker.domain.models.City
 import javax.inject.Inject
 
 class CitiesPresenter @Inject constructor(
-    private val view: CitiesContract.View
+    private val view: CitiesContract.View,
+    private val setLastCityUseCase: SetLastCityUseCase
 ): CitiesContract.Presenter {
     override fun onViewCreated() {
         val cityList = listOf(
@@ -61,5 +63,9 @@ class CitiesPresenter @Inject constructor(
 
         view.showCities(cityList)
 
+    }
+
+    override suspend fun setLastCity(city: String) {
+        setLastCityUseCase.execute(city)
     }
 }

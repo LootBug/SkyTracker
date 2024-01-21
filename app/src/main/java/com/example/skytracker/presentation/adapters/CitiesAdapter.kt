@@ -15,6 +15,7 @@ import com.example.skytracker.data.database.LastCityEntity
 import com.example.skytracker.databinding.CityItemBinding
 import com.example.skytracker.domain.mappres.toWeatherModel
 import com.example.skytracker.domain.models.City
+import com.example.skytracker.presentation.city_selection.CitiesContract
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -25,7 +26,8 @@ import java.util.*
 
 class CitiesAdapter(
     private val city: List<City>,
-    private val context: Context
+    private val context: Context,
+    private val presenter: CitiesContract.Presenter
 ) :
     RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -67,11 +69,7 @@ class CitiesAdapter(
             })
 
             GlobalScope.launch {
-                lastCityDao = LastCityDatabase
-                    .getDatabase(context)
-                    .lastCityDao()
-
-                lastCityDao.insertLastCity(LastCityEntity(0, city.name))
+                presenter.setLastCity(city.name)
             }
 
             if (context is CitySelectionActivity) {

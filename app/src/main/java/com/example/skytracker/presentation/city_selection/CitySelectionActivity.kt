@@ -45,7 +45,7 @@ class CitySelectionActivity : AppCompatActivity(), CitiesContract.View {
     }
 
     override fun showCities(cityList: List<City>) {
-        citiesAdapter = CitiesAdapter(cityList, this)
+        citiesAdapter = CitiesAdapter(cityList, this, presenter)
         binding.citiesList.adapter = citiesAdapter
     }
 }
